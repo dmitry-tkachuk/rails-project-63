@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module HexletCode
+  # Tag module for generating HTML tags.
   module Tag
     SINGLE_TAGS = %w[br img input].freeze
 
