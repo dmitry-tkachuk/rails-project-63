@@ -3,14 +3,14 @@
 require "bundler/gem_tasks"
 require "rake/testtask"
 
-Rake::TestTask.new(:test) do |t|
+Rake::TestTask.new(:tags_test) do |t|
   t.libs << "test"
   t.libs << "lib"
-  t.test_files = FileList["test/**/test_*.rb"]
+  t.test_files = FileList["test/hexlet_code/tags_test.rb"]
 end
 
 require "rubocop/rake_task"
 
 RuboCop::RakeTask.new
 
-task default: %i[test rubocop]
+task default: %i[test rubocop tags_test]
