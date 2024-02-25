@@ -2,8 +2,16 @@
 
 require_relative "hexlet_code/version"
 
-# HexletCode for generating forms
 module HexletCode
-  class Error < StandardError; end
   autoload :Tag, "hexlet_code/tag.rb"
+  autoload :FormBuilder, "hexlet_code/form_builder.rb"
+  autoload :Version, "hexlet_code/version.rb"
+
+  def self.form_for(object, options = {})
+    form_builder = FormBuilder.new object
+
+    yield form_builder if block_given?
+
+    form_builder.build(options)
+  end
 end
