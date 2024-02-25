@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_helper"
+require 'test_helper'
 
 User = Struct.new(:name, :job, keyword_init: true)
 
@@ -10,7 +10,7 @@ class TestHexletCode < Minitest::Test
   end
 
   def test_form_for_empty
-    user = User.new(name: "John", job: "Developer")
+    user = User.new(name: 'John', job: 'Developer')
     result = HexletCode.form_for(user) { |f| }
 
     expected = <<~HTML.strip
@@ -20,8 +20,8 @@ class TestHexletCode < Minitest::Test
   end
 
   def test_form_for_with_url
-    user = User.new(name: "John", job: "Developer")
-    result = HexletCode.form_for(user, url: "/users") { |f| }
+    user = User.new(name: 'John', job: 'Developer')
+    result = HexletCode.form_for(user, url: '/users') { |f| }
 
     expected = <<~HTML.strip
       <form action="/users" method="post"></form>
@@ -30,7 +30,7 @@ class TestHexletCode < Minitest::Test
   end
 
   def test_form_for_with_input
-    user = User.new(name: "John", job: "Developer")
+    user = User.new(name: 'John', job: 'Developer')
     result = HexletCode.form_for(user) do |f|
       f.input(:name)
     end
@@ -40,7 +40,7 @@ class TestHexletCode < Minitest::Test
   end
 
   def test_form_for_with_submit
-    user = User.new(name: "John", job: "Developer")
+    user = User.new(name: 'John', job: 'Developer')
     result = HexletCode.form_for(user, &:submit)
 
     expected = <<~HTML.strip
@@ -52,7 +52,7 @@ class TestHexletCode < Minitest::Test
   end
 
   def test_form_for_with_input_and_submit
-    user = User.new(name: "John", job: "Developer")
+    user = User.new(name: 'John', job: 'Developer')
     result = HexletCode.form_for(user) do |f|
       f.input(:name)
       f.submit

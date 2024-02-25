@@ -10,7 +10,7 @@ module HexletCode
       attrs_str = build_attributes(attributes)
 
       result += " #{attrs_str}" unless attrs_str.empty?
-      result += ">"
+      result += '>'
 
       body = yield if block_given?
 
@@ -26,7 +26,7 @@ module HexletCode
         acc << "#{key}=\"#{value}\""
       end
 
-      attrs_array.join " "
+      attrs_array.join ' '
     end
   end
 end

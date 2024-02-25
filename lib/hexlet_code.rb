@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "hexlet_code/version"
+require_relative 'hexlet_code/version'
 
 module HexletCode
-  autoload :Tag, "hexlet_code/tag.rb"
-  autoload :FormBuilder, "hexlet_code/form_builder.rb"
-  autoload :Version, "hexlet_code/version.rb"
+  autoload :Tag, 'hexlet_code/tag.rb'
+  autoload :FormBuilder, 'hexlet_code/form_builder.rb'
+  autoload :Version, 'hexlet_code/version.rb'
 
   def self.form_for(object, options = {})
     form_builder = FormBuilder.new object
