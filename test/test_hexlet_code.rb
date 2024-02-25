@@ -11,7 +11,7 @@ class TestHexletCode < Minitest::Test
 
   def test_form_for_empty
     user = User.new(name: 'John', job: 'Developer')
-    result = HexletCode.form_for(user) { |f| }
+    result = HexletCode.form_for(user)
 
     expected = <<~HTML.strip
       <form action="#" method="post"></form>
@@ -21,7 +21,7 @@ class TestHexletCode < Minitest::Test
 
   def test_form_for_with_url
     user = User.new(name: 'John', job: 'Developer')
-    result = HexletCode.form_for(user, url: '/users') { |f| }
+    result = HexletCode.form_for(user, url: '/users')
 
     expected = <<~HTML.strip
       <form action="/users" method="post"></form>
