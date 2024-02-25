@@ -1,7 +1,6 @@
 [![CI](https://github.com/dmitry-tkachuk/rails-project-63/actions/workflows/main.yml/badge.svg)](https://github.com/dmitry-tkachuk/rails-project-63/actions/workflows/main.yml)
 
-[![Hexlet Check](https://github.com/dmitry-tkachuk/rails-project-63/actions/workflows/hexlet_check.yml/badge.svg)](https://github.com/dmitry-tkachuk/rails-project-63/actions/)
-
+[![Actions Status](https://github.com/dmitry-tkachuk/rails-project-63/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/dmitry-tkachuk/rails-project-63/actions)
 ## Installation
 
 Add it to your Gemfile:
@@ -18,7 +17,8 @@ make test
 make lint
 ```
 
-## Usage
+### Usage
+```ruby
 User = Struct.new(:name, :job, keyword_init: true)
 user = User.new job: "hexlet"
 
@@ -35,3 +35,4 @@ end
 #   <input name="job" type="text" value="hexlet">
 #   <input type="submit" value="Save">
 # </form>
+```
