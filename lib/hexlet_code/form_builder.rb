@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'byebug'
 require 'active_support/core_ext/string/inflections'
 
 module HexletCode
