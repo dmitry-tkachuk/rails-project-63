@@ -2,5 +2,11 @@
 
 $LOAD_PATH.unshift File.expand_path('../lib', __dir__)
 require 'hexlet_code'
-
 require 'minitest/autorun'
+require 'byebug'
+
+User = Struct.new(:name, :job, keyword_init: true)
+
+def read_fixture(name)
+  File.read("#{__dir__}/fixtures/#{name}.html")
+end

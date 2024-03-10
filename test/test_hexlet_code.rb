@@ -2,82 +2,88 @@
 
 require 'test_helper'
 
-User = Struct.new(:name, :job, keyword_init: true)
-
 class TestHexletCode < Minitest::Test
   def test_that_it_has_a_version_number
     refute_nil ::HexletCode::VERSION
   end
 
-  def test_form_for_empty
-    user = User.new(name: 'John', job: 'Developer')
-    result = HexletCode.form_for(user)
-
-    expected = <<~HTML.strip
-      <form action="#" method="post"></form>
-    HTML
-    assert_equal expected, result
+  def setup
+    @user = User.new name: 'John', job: 'Developer'
   end
 
-  def test_form_for_with_url
-    user = User.new(name: 'John', job: 'Developer')
-    result = HexletCode.form_for(user, url: '/users')
-
-    expected = <<~HTML.strip
-      <form action="/users" method="post"></form>
-    HTML
-    assert_equal expected, result
+  def test_it_generates_form
+    expected = read_fixture('default_form')
+    actual = HexletCode.form_for(@user)
+    assert_equal expected, actual
   end
 
-  def test_form_for_with_input
-    user = User.new(name: 'John', job: 'Developer')
-    result = HexletCode.form_for(user) do |f|
-      f.input(:name)
+  def test_it_generates_form_with_input
+    expected = read_fixture('input_form')
+    actual = HexletCode.form_for @user do |f|
+      f.input :name
+      f.input :job
     end
-
-    expected_input
-    assert_equal expected_input, result
+    assert_equal expected, actual
   end
 
-  def test_form_for_with_submit
-    user = User.new(name: 'John', job: 'Developer')
-    result = HexletCode.form_for(user, &:submit)
-
-    expected = <<~HTML.strip
-      <form action="#" method="post">
-      <input type="submit" value="Save">
-      </form>
-    HTML
-    assert_equal expected, result
+  def test_it_generates_form_with_textarea
+    expected = read_fixture('input_textarea_form')
+    actual = HexletCode.form_for @user do |f|
+      f.input :name
+      f.input :job, as: :text
+    end
+    assert_equal expected, actual
   end
 
-  def test_form_for_with_input_and_submit
-    user = User.new(name: 'John', job: 'Developer')
-    result = HexletCode.form_for(user) do |f|
-      f.input(:name)
+  def test_it_generates_form_with_input_additional_attrs
+    expected = read_fixture('input_additional_attributes_form')
+    actual = HexletCode.form_for @user do |f|
+      f.input :name, class: 'user-input'
+      f.input :job
+    end
+    assert_equal expected, actual
+  end
+
+  def test_it_generates_form_with_additional_attributes
+    expected = read_fixture('submit_form')
+    actual = HexletCode.form_for @user, url: '/profile', method: :get, class: 'hexlet-form', &:submit
+    assert_equal expected, actual
+  end
+
+  def test_it_generates_form_with_submit
+    expected = read_fixture('input_with_submit_form')
+    actual = HexletCode.form_for @user do |f|
+      f.input :name
+      f.input :job
       f.submit
     end
-
-    expected_input_and_submit
-    assert_equal expected_input_and_submit, result
+    assert_equal expected, actual
   end
 
-  def expected_input
-    <<~HTML.strip
-      <form action="#" method="post">
-      <label for="name">Name</label>
-      <input name="name" type="text" value="John">
-      </form>
-    HTML
+  def test_it_generates_form_with_submit_value
+    expected = read_fixture('input_with_submit_value_form')
+    actual = HexletCode.form_for @user do |f|
+      f.input :name
+      f.input :job
+      f.submit 'value'
+    end
+    assert_equal expected, actual
   end
 
-  def expected_input_and_submit
-    <<~HTML.strip
-      <form action="#" method="post">
-      <label for="name">Name</label>
-      <input name="name" type="text" value="John">
-      <input type="submit" value="Save">
-      </form>
-    HTML
+  def test_it_generates_form_with_url
+    expected = read_fixture('url_form')
+    actual = HexletCode.form_for(@user, url: '/users')
+    assert_equal expected, actual
+  end
+
+  def test_it_raise_on_struct_missing_method
+    assert_raises NoMethodError do
+      HexletCode.form_for @user, url: '/users' do |f|
+        f.input :name
+        f.input :job, as: :text
+        f.input :schedule # missing field
+        f.input :workload # missing field
+      end
+    end
   end
 end

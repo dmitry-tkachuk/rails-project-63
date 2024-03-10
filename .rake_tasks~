@@ -8,3 +8,4 @@ release[remote]
 rubocop
 rubocop:autocorrect
 rubocop:autocorrect_all
+tags_test

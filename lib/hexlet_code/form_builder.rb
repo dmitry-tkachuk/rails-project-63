@@ -1,69 +1,39 @@
 # frozen_string_literal: true
 
+require 'byebug'
+require 'active_support/core_ext/string/inflections'
+
 module HexletCode
   class FormBuilder
-    def initialize(object)
+    DEFAULT_ACTION = '#'
+    DEFAULT_METHOD = 'post'
+
+    def initialize(object, attributes)
       @object = object
-      @fields = []
-    end
-
-    def form(options, &block)
-      action = options[:url] || '#'
-      method = options[:method] || 'post'
-
-      Tag.build('form', action:, method:, **options.except(:url, :method)) do
-        block&.call
-      end
-    end
-
-    def submit(name = 'Save')
-      @fields << Tag.build('input', type: 'submit', value: name)
-    end
-
-    def label(name, value = nil)
-      value ||= name.to_s.capitalize
-      @fields << Tag.build('label', for: name) { value }
-    end
-
-    def input(name, args = {})
-      tag_name = args.fetch(:as, :input) == :text ? 'textarea' : 'input'
-
-      value = @object.public_send(name)
-
-      tag_args = {
-        name:,
-        type: args[:type] || 'text',
-        value:,
-        **args.except(:as)
-      }.compact
-
-      label(name)
-
-      tag_name == 'input' ? build_input(tag_args) : build_textarea(tag_args)
-    end
-
-    def build(options)
-      form(options) do
-        result_fields = @fields.join "\n"
-        result_fields = "\n#{result_fields}\n" unless result_fields.empty?
-        result_fields
-      end
-    end
-
-    private
-
-    def build_input(args)
-      @fields << Tag.build('input', **args)
-    end
-
-    def build_textarea(args)
-      tag_args = {
-        **args.except(:value, :type),
-        rows: args[:rows] || '20',
-        cols: args[:cols] || '40'
+      action = attributes.fetch(:url, DEFAULT_ACTION)
+      method = attributes.fetch(:method, DEFAULT_METHOD)
+      @form_body = {
+        inputs: [],
+        submit: nil,
+        form_options: { action:, method: }.merge(attributes.except(:url, :method))
       }
+    end
+    attr_accessor :object, :form_body
 
-      @fields << Tag.build('textarea', **tag_args) { args[:value] }
+    def input(name, **attributes)
+      value = @object.send(name)
+      input_type = FormBuilder.select_input_class(attributes.fetch(:as, :string))
+      input = input_type.new({ name:, value: }.merge(attributes.except(:as)))
+      @form_body[:inputs] << input
+    end
+
+    def submit(value = 'Save')
+      submit_attributes = { tag: 'input', type: 'submit', value: }
+      @form_body[:submit] = { options: submit_attributes }
+    end
+
+    def self.select_input_class(tag)
+      "HexletCode::Inputs::#{tag.capitalize}Input".constantize
     end
   end
 end
