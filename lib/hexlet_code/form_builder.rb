@@ -33,7 +33,7 @@ module HexletCode
 
     private
 
-    def self.select_input_class(tag)
+    def select_input_class(tag)
       "HexletCode::Inputs::#{tag.capitalize}Input".constantize
     end
   end
