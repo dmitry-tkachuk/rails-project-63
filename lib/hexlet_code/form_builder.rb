@@ -31,6 +31,8 @@ module HexletCode
       @form_body[:submit] = { options: submit_attributes }
     end
 
+    private
+
     def self.select_input_class(tag)
       "HexletCode::Inputs::#{tag.capitalize}Input".constantize
     end

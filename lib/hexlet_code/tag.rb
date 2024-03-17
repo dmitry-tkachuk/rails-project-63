@@ -16,13 +16,11 @@ module HexletCode
       end
 
       def build_attrs(attrs)
-        if attrs.empty?
-          ''
-        else
-          attrs.map do |key, value|
-            "#{key}=\"#{value}\""
-          end.join(' ').prepend(' ')
-        end
+        return '' if attrs.empty?
+
+        attrs.map do |key, value|
+          "#{key}=\"#{value}\""
+        end.join(' ').prepend(' ')
       end
     end
   end
